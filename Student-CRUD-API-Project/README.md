@@ -70,7 +70,7 @@ If `.env` is missing or you want to update it, create a file named `.env` with:
 
 ```env
 PORT=3000
-MONGO_URL=mongodb://localhost:27017/students-crud
+MONGO_URL=mongodb://localhost:27017/students-crud  # replace this with your MongoDB connection URL
 JWT_SECRET=your-secret-key
 ```
 
