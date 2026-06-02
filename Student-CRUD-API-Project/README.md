@@ -168,7 +168,7 @@ Create a `.env` file in the `crud-api-project/` folder:
 
 ```env
 PORT = 3000
-MONGO_URL = mongodb://localhost:27017/students-crud
+MONGO_URL = your mongodb url
 JWT_SECRET = YourSecretKeyHere123
 ```
 
