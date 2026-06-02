@@ -1,104 +1,154 @@
-# File Upload Project
+# 📤 Multi-Field File Upload System with Multer
 
-## Overview
+> A complete, beginner-friendly Node.js application demonstrating how to handle **secure multi-field file uploads** using Express, EJS, and **Multer**. Features custom disk storage, strict file size/MIME-type filters, and customized error boundaries.
 
-This project demonstrates a beginner-friendly Node.js file upload app using Express, Multer, and EJS. It allows users to upload one image file and multiple document files through a web form, then returns metadata about the uploaded files.
+---
 
-The project is ideal for learning how to:
-- Build a simple upload form with EJS
-- Handle multipart form submissions in Express
-- Validate uploaded files by type and size
-- Store uploads locally with Multer
-- Report upload errors clearly
+## 🎯 What is File Upload in Node.js?
 
-## What this project does
+Browsers upload files using the `multipart/form-data` encoding format. Express does not parse this format out-of-the-box. This project demonstrates how to use **Multer**—a node.js middleware for handling multipart forms—to intercept incoming files, validate them against security policies, rename them using custom logic, and store them securely on the server's disk.
 
-When the user visits the homepage, the app renders a form where they can:
-- Enter a username
-- Upload one image file (`userfile`)
-- Upload up to three document files (`userdocuments`)
+### ⚡ Key Features
 
-The server accepts:
-- `image/jpeg` and `image/png` for the image field
-- `application/pdf` for document uploads
+*   **🗄️ Custom Disk Storage:** Saves files locally with randomized/timestamp-based filenames to prevent files from overwriting each other.
+*   **📑 Multi-Field Support:** Accepts different file types in the same request payload (e.g., one profile photo AND multiple PDF documents).
+*   **🛡️ Type Filtering (MIME-Type Validation):** Strict checks that permit only `.jpeg`/`.png` for images and `.pdf` for documents.
+*   **⚖️ File Size Limits:** Built-in safeguards that enforce a strict **3MB size limit** per file to prevent Denial-of-Service (DoS) memory floods.
+*   **💥 Error Boundaries:** Specialized error-handling middleware that catches and displays user-friendly errors for file size limits, invalid formats, or unexpected field names.
 
-After a successful upload, the server responds with details about the saved files.
+---
 
-## Tech stack
+## 🛠️ Tech Stack & Badges
 
-- Node.js
-- Express
-- Multer
-- EJS
-- Nodemon (development)
+| Category | Technology | Badge | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Backend Runtime** | **Node.js** | ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white) | JavaScript execution environment |
+| **Framework** | **Express.js** | ![Express.js](https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white) | Routing and middleware core |
+| **Upload Parser** | **Multer** | ![Multer](https://img.shields.io/badge/Multer-F25F22?style=flat-square&logo=npm&logoColor=white) | Multipart file stream parser |
+| **Template Engine** | **EJS** | ![EJS](https://img.shields.io/badge/EJS-A91E50?style=flat-square&logo=ejs&logoColor=white) | Upload form frontend template |
+| **Styling** | **Bootstrap 5** | ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=flat-square&logo=bootstrap&logoColor=white) | CSS styling framework for the form |
 
-## Prerequisites
+---
 
-Make sure you have the following installed:
-- Node.js
-- npm
+## 🔄 File Stream Architecture
 
-## Setup and run
-
-1. Open a terminal and navigate to the project folder:
-
-```bash
-cd e:\NODEJS\nodejs-learning-journey\file-upload
+```text
+  [ Client Browser ]                              [ Express Server / Multer ]
++----------------------+                       +----------------------------------+
+| enctype:             |                       | 1. Intercepts request stream     |
+| "multipart/form-data"|                       |                                  |
+|                      |                       | 2. Evaluates limits & size       |
+| - userfile (Image)   | -- (POST Request) --> |    (Max: 3MB)                    |
+| - userdocuments (PDF)|                       |                                  |
+| - username (Text)    |                       | 3. Passes through FileFilter     |
+|                      |                       |    (Validates MIME types)        |
++----------------------+                       |                                  |
+                                               | 4. Renames & saves to disk       |
+                                               |    (Dest: ./uploads/)            |
+                                               +-----------------+----------------+
+                                                                 |
+                                                                 v
+                                                       [ Disk Directory ]
+                                                       ./uploads/
+                                                       └── 1717351600123.png
+                                                       └── 1717351600456.pdf
 ```
 
-2. Install dependencies:
+---
 
+## 📁 Project Directory Structure
+
+```text
+file-upload/
+├── uploads/             # Destination folder where files are stored (automatically created)
+├── views/
+│   └── myform.ejs       # EJS form layout containing multi-field file inputs
+├── index.js             # Main server logic, Multer setup, filters, routes, and error handlers
+├── package.json         # NPM scripts and dependencies
+└── README.md            # Documentation (this file)
+```
+
+---
+
+## 📝 Multer Validation Matrix
+
+The app configures two separate fields using `upload.fields()`, enforcing strict rules for each:
+
+| Form Field Name | Input Type | Allowed File Extensions | Max File Count | File Size Limit |
+| :--- | :--- | :--- | :--- | :--- |
+| **`userfile`** | Single Image | `.jpg`, `.jpeg`, `.png` | 1 | 3 MB |
+| **`userdocuments`** | Multiple Documents | `.pdf` | 3 | 3 MB |
+
+---
+
+## 🚀 Setup & Installation Guide
+
+Follow these steps to set up and run the application locally:
+
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) installed (v16.0.0 or higher).
+
+### 2. Clone and Navigate
+```bash
+git clone https://github.com/moosarehan/nodejs-learning-journey.git
+cd nodejs-learning-journey/file-upload
+```
+
+### 3. Install Dependencies
 ```bash
 npm install
 ```
 
-3. Start the server:
+### 4. Running the App
+*   **Development Mode (Auto-reloads on file changes):**
+    ```bash
+    npm start
+    ```
+*   **Production/Standard Mode:**
+    ```bash
+    node index.js
+    ```
 
-```bash
-npm start
-```
-
-4. Open your browser and go to:
-
+You should see:
 ```text
-http://localhost:3000
+Server running on port 3000
 ```
 
-## Project structure
+### 5. Access the application
+Open your web browser and visit: **[http://localhost:3000](http://localhost:3000)**
 
-- `index.js` — Express server and Multer file upload handling
-- `package.json` — project metadata and dependencies
-- `views/myform.ejs` — upload form template
-- `uploads/` — local upload destination created automatically by Multer
+---
 
-## How the upload works
+## 🧪 Testing Scenarios (Walkthrough)
 
-- The homepage renders an HTML form with `enctype="multipart/form-data"`.
-- The server uses Multer middleware to store files in the `uploads` directory.
-- The upload route accepts two fields:
-  - `userfile` (single file)
-  - `userdocuments` (multiple files)
-- The upload logic checks file MIME types and rejects invalid formats.
-- Errors from Multer are handled and returned with meaningful messages.
+Test the application limits to see how Multer and the error boundaries respond:
 
-## Supported file rules
+### Case A: Successful Upload (Happy Path)
+1.  Enter your name.
+2.  Choose a valid `.jpg` or `.png` file for the **Upload File** field.
+3.  Choose one or two valid `.pdf` files for the **Documents File** field.
+4.  Click **Submit**.
+5.  *Expected Result (HTTP 200):* The server returns a JSON response listing metadata about your files (destination path, generated filename, file size, etc.).
 
-- `userfile`: only `jpeg` or `png` images
-- `userdocuments`: only `pdf` documents
-- Maximum file size: 3 MB per file
+### Case B: File Size Exceeded (Security Test)
+1.  Attempt to upload a file larger than **3MB**.
+2.  *Expected Result (HTTP 400):* The server returns a descriptive error message indicating the file is too large.
 
-## Notes
+### Case C: Wrong File Type Uploaded (Validation Test)
+1.  Choose a `.txt` or `.zip` file for the **Documents File** field.
+2.  Click **Submit**.
+3.  *Expected Result (HTTP 500):* The custom `fileFilter` throws an error: `Something went wrong: Only PDF are allowed for documents`.
 
-- If no files are selected, the server responds with a `400` error.
-- If too many files are sent or a wrong field name is used, the app returns a Multer error.
-- The app is a simple learning example and does not implement user authentication.
+### Case D: Too Many Files Uploaded (Limit Test)
+1.  Attempt to upload **four** PDF files under the **Documents File** field.
+2.  *Expected Result (HTTP 400):* The server returns a Multer error: `Error : Too many files uploaded!`.
 
-## Next steps
+---
 
-You can extend this app by:
-- Saving file metadata to a database
-- Creating a user authentication flow
-- Adding frontend validation before submission
-- Serving uploaded files from a secure endpoint
+## 🧠 What You'll Learn from This Project
 
-Happy learning! This project is a great way to start with file uploads in Node.js.
+1.  **Multipart Handling:** Understanding EJS forms using `enctype="multipart/form-data"`.
+2.  **Disk Storage Configuration:** Customizing filename storage logic to use safe timestamps (`Date.now() + extname`).
+3.  **Strict File Filter Strategies:** Validating file MIME types (`application/pdf`, `image/jpeg`) before writing bytes to disk.
+4.  **Multer Error Boundaries:** Catching Multer errors using Express middleware (`error instanceof multer.MulterError`) to customize the HTTP response codes returned to the client.
+5.  **Multi-field Processing:** Handling distinct constraints on multiple files simultaneously via `upload.fields()`.
