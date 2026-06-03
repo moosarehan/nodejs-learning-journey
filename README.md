@@ -71,7 +71,3 @@ npm start
 
 ---
 
-## 📈 Roadmap / Next Achievements
-*   [ ] Integrate OAuth2 social logins (Google, GitHub) into the authentication folder.
-*   [ ] Migrate local uploaded files to cloud storage solutions (e.g., AWS S3 or Cloudinary).
-*   [ ] Deploy selected API endpoints and databases to live hosting providers (e.g., Render, Vercel, Railway).
