@@ -18,6 +18,7 @@ Explore the repository by checking out each modular application below. Every dir
 | 📝 **[form-validation](./form-validation)** | Form Validation & Sanitization | Field presence checks, strong password criteria, range validations, custom validators, sanitizers. | ![express-validator](https://img.shields.io/badge/express--validator-5C3E5A?style=flat-square) ![EJS](https://img.shields.io/badge/EJS-A91E50?style=flat-square&logo=ejs&logoColor=white) |
 | 📤 **[file-upload](./file-upload)** | Multi-Field Upload System | Safe disk-storage configuration, size checks (Max 3MB), MIME-type filters, and error boundaries. | ![Multer](https://img.shields.io/badge/Multer-E91E63?style=flat-square) ![EJS](https://img.shields.io/badge/EJS-A91E50?style=flat-square&logo=ejs&logoColor=white) |
 | 🛡️ **[session-project](./session-project)** | Persistent Store Session Manager | Cookie-to-DB mapping, session lifespan rules, in-memory leaks comparison, and custom stores. | ![express-session](https://img.shields.io/badge/express--session-00599C?style=flat-square) ![connect-mongo](https://img.shields.io/badge/connect--mongo-47A248?style=flat-square) |
+| 🔑 **[oauth-project](./oauth-project)** | Google OAuth 2.0 Social Login | Passport.js Google strategy, OAuth 2.0 authorization code flow, session-based user persistence, protected route middleware. | ![Passport](https://img.shields.io/badge/Passport.js-34E27A?style=flat-square&logo=passport&logoColor=white) ![Google](https://img.shields.io/badge/Google_OAuth-4285F4?style=flat-square&logo=google&logoColor=white) ![Session](https://img.shields.io/badge/express--session-FF6C37?style=flat-square) |
 
 ---
 
@@ -44,6 +45,13 @@ Organizing files into logical concerns:
 ### 4. Interactive Client-Side Integrations
 *   Consuming REST APIs on the frontend via AJAX/Fetch.
 *   Creating feature-rich interactive dashboards with advanced sorting, column filtering, search, and document exportation (Excel, CSV, PDF) using **jQuery DataTables** and **Tabulator**.
+
+### 5. OAuth 2.0 & Social Authentication
+*   Implementing the full **OAuth 2.0 Authorization Code Flow** using **Passport.js** and the `passport-google-oauth20` strategy.
+*   Delegating identity verification to a trusted third-party provider (Google) so the app never handles raw passwords.
+*   Managing authenticated user state across requests via `serializeUser` / `deserializeUser` and `express-session`.
+*   Protecting private routes with a reusable **auth guard middleware** (`req.isAuthenticated()`).
+*   Securely storing OAuth credentials (Client ID, Client Secret, Callback URL) in environment variables via `dotenv`.
 
 ---
 
